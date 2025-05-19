@@ -75,7 +75,7 @@ export default function Home() {
         </h1>
 
         <p className="text-foreground/80 w-full md:w-2/3 text-center text-sm">
-          Ask SuperiaAI anything, and see responses from both versions of the
+          Ask Superia AI anything, and see responses from both versions of the
           model.
         </p>
 
@@ -83,7 +83,7 @@ export default function Home() {
           <div className="flex items-center gap-2">
             <Input
               type="text"
-              placeholder="Ask Superiaanything..."
+              placeholder="Ask Superia anything..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               className="flex-1"
@@ -96,7 +96,7 @@ export default function Home() {
                   Asking...
                 </>
               ) : (
-                "Ask Sage"
+                "Ask Superia"
               )}
             </Button>
           </div>
@@ -145,7 +145,7 @@ export default function Home() {
 
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         <h3 className="text-sm text-foreground/60">
-          <span>SuperiaAI</span> All rights reserved. copyright &copy;{" "}
+          <span>Superia AI</span> All rights reserved. copyright &copy;{" "}
           {new Date().getFullYear()}
         </h3>
       </footer>
