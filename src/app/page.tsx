@@ -104,7 +104,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
             <div className="border rounded-lg p-4">
               <h3 className="font-medium text-sm mb-2 text-foreground/70">
-                GPT-4.1 (400 questions)
+                Response 1
               </h3>
               <div className="min-h-32 text-foreground/90">
                 {gpt41Hook.isPending ? (
@@ -123,7 +123,7 @@ export default function Home() {
 
             <div className="border rounded-lg p-4">
               <h3 className="font-medium text-sm mb-2 text-foreground/70">
-                GPT-4o (400 questions)
+                Response 2
               </h3>
               <div className="min-h-32 text-foreground/90">
                 {gpt4oHook.isPending ? (
