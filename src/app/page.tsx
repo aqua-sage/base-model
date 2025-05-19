@@ -1,6 +1,5 @@
 "use client";
 import { ThemeToggle } from "@/components/buttons/theme-toggle";
-import Image from "next/image";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
