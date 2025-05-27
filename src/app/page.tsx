@@ -17,7 +17,7 @@ export default function Home() {
   });
 
   const gpt41Hook = useOpenAI({
-    model: "ft:gpt-4.1-2025-04-14:aqualabs::BYqfJkmU",
+    model: "ft:gpt-4.1-2025-04-14:aqualabs::BbgQkGX1",
     onSuccess: (data) => {
       setResponses((prev) => ({
         ...prev,
@@ -34,7 +34,7 @@ export default function Home() {
   });
 
   const gpt4oHook = useOpenAI({
-    model: "ft:gpt-4o-2024-08-06:aqualabs::BYqY3vsH",
+    model: "ft:gpt-4o-2024-08-06:aqualabs::BZWuiow2",
     onSuccess: (data) => {
       setResponses((prev) => ({
         ...prev,
