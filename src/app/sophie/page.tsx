@@ -13,7 +13,7 @@ export default function SophieChat() {
 
   const sophieHook = useOpenAI({
     model: "ft:gpt-4.1-2025-04-14:aqualabs:sophie-4-mini:BfoX6SLG",
-    name: "Sophie",
+    name: "Sophie Delavue",
     isCharacter: true,
     onSuccess: (data) => {
       setResponse(data.output[0]?.content[0]?.text || "No response");
