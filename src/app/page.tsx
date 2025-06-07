@@ -1,10 +1,11 @@
 "use client";
 import { ThemeToggle } from "@/components/buttons/theme-toggle";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 import { useOpenAI } from "@/hooks/useOpenAI";
+import Link from "next/link";
 
 export default function Home() {
   const [input, setInput] = useState("");
@@ -62,6 +63,8 @@ export default function Home() {
     gpt41Hook.mutate(input);
     gpt4oHook.mutate(input);
   };
+
+  const characters = ["sophie", "laila", "boris", "shepard", "tadle"];
 
   return (
     <div className="grid grid-rows-[40px_1fr_20px] items-center justify-items-center min-h-screen font-sans p-8 select-none">
@@ -141,6 +144,22 @@ export default function Home() {
             </div>
           </div>
         </form>
+        {/* Character Navigation Buttons */}
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          {characters.map((character) => (
+            <Link
+              href={`/${character}`}
+              key={character}
+              className={buttonVariants({
+                variant: "outline",
+                size: "sm",
+                className: "capitalize hover:bg-primary ",
+              })}
+            >
+              {character}
+            </Link>
+          ))}
+        </div>
       </main>
 
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">

@@ -7,31 +7,31 @@ import { Home, Loader2 } from "lucide-react";
 import { useOpenAI } from "@/hooks/useOpenAI";
 import Link from "next/link";
 
-export default function LailaChat() {
+export default function BorisChat() {
   const [input, setInput] = useState("");
   const [response, setResponse] = useState<string | null>(null);
 
-  const lailaHook = useOpenAI({
-    model: "ft:gpt-4.1-2025-04-14:aqualabs::Bbh3Ly4F",
-    name: "Laila",
+  const borisHook = useOpenAI({
+    model: "ft:gpt-4.1-2025-04-14:aqualabs:boris-4-mini:BfoyOqx8",
+    name: "Boris",
     isCharacter: true,
     onSuccess: (data) => {
       setResponse(data.output[0]?.content[0]?.text || "No response");
     },
     onError: (error) => {
-      console.error("Laila Error:", error);
+      console.error("Boris Error:", error);
       setResponse("Error fetching response");
     },
   });
 
-  const isLoading = lailaHook.isPending;
+  const isLoading = borisHook.isPending;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
 
     setResponse(null);
-    lailaHook.mutate(input);
+    borisHook.mutate(input);
   };
 
   return (
@@ -52,9 +52,9 @@ export default function LailaChat() {
       </div>
       <main className="flex flex-col items-center justify-center gap-8 w-full max-w-2xl">
         <div className="text-center">
-          <h1 className="font-bold text-4xl mb-2">Laila</h1>
+          <h1 className="font-bold text-4xl mb-2">Boris</h1>
           <span className="inline-block bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300 px-3 py-1 rounded-full text-sm font-medium">
-            Laila
+            Boris
           </span>
         </div>
 
@@ -62,7 +62,7 @@ export default function LailaChat() {
           <div className="flex items-center gap-2">
             <Input
               type="text"
-              placeholder="Ask Laila anything..."
+              placeholder="Ask Boris anything..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               className="flex-1"
@@ -98,7 +98,7 @@ export default function LailaChat() {
 
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         <h3 className="text-sm text-foreground/60">
-          Laila AI &copy; {new Date().getFullYear()}
+          Boris AI &copy; {new Date().getFullYear()}
         </h3>
       </footer>
     </div>
