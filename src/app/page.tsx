@@ -4,64 +4,68 @@ import { useState } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
-import { useOpenAI } from "@/hooks/useOpenAI";
+
 import Link from "next/link";
+import { useAssistantThread, useOpenAIAssistant } from "@/hooks/useAssistant";
 
 export default function Home() {
   const [input, setInput] = useState("");
   const [responses, setResponses] = useState<{
     gpt41: string | null;
-    gpt4o: string | null;
+    assistant: string | null;
   }>({
     gpt41: null,
-    gpt4o: null,
+    assistant: null,
   });
 
-  const gpt41Hook = useOpenAI({
-    model: "ft:gpt-4.1-2025-04-14:aqualabs::BbgQkGX1",
+  // Thread management for the assistant
+  const { threadId, setThreadId, createMessage } = useAssistantThread();
+
+  // // Fine-tuned model hook (keeping original for fine-tuned models)
+  // const gpt41Hook = useOpenAI({
+  //   model: "ft:gpt-4.1-2025-04-14:aqualabs::BbgQkGX1",
+  //   onSuccess: (data) => {
+  //     setResponses((prev) => ({
+  //       ...prev,
+  //       gpt41: data.output[0]?.content[0]?.text || "No response",
+  //     }));
+  //   },
+  //   onError: (error) => {
+  //     console.error("GPT-4.1 Error:", error);
+  //     setResponses((prev) => ({
+  //       ...prev,
+  //       gpt41: "Error fetching response",
+  //     }));
+  //   },
+  // });
+
+  // Assistant hook for the assistant model
+  const assistantHook = useOpenAIAssistant({
     onSuccess: (data) => {
       setResponses((prev) => ({
         ...prev,
-        gpt41: data.output[0]?.content[0]?.text || "No response",
+        assistant: data.assistantMessage || "No response",
       }));
+      setThreadId(data.thread.id);
     },
     onError: (error) => {
-      console.error("GPT-4.1 Error:", error);
+      console.error("Assistant Error:", error);
       setResponses((prev) => ({
         ...prev,
-        gpt41: "Error fetching response",
+        assistant: "Error fetching response",
       }));
     },
   });
 
-  const gpt4oHook = useOpenAI({
-    model: "ft:gpt-4o-2024-08-06:aqualabs::BZWuiow2",
-    onSuccess: (data) => {
-      setResponses((prev) => ({
-        ...prev,
-        gpt4o: data.output[0]?.content[0]?.text || "No response",
-      }));
-    },
-    onError: (error) => {
-      console.error("GPT-4o Error:", error);
-      setResponses((prev) => ({
-        ...prev,
-        gpt4o: "Error fetching response",
-      }));
-    },
-  });
-
-  const isLoading = gpt41Hook.isPending || gpt4oHook.isPending;
+  const isLoading = assistantHook.isPending;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
 
-    setResponses({ gpt41: null, gpt4o: null });
+    setResponses({ gpt41: null, assistant: null });
 
-    // Call both models simultaneously
-    gpt41Hook.mutate(input);
-    gpt4oHook.mutate(input);
+    assistantHook.mutate(createMessage("asst_4IyPUrDXrcyWlwgTGqdVQJoD", input));
   };
 
   const characters = ["sophie", "laila", "boris", "shepard", "tadle"];
@@ -104,37 +108,18 @@ export default function Home() {
             </Button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+          <div className="grid grid-cols-1 gap-4 mt-6">
             <div className="border rounded-lg p-4">
               <h3 className="font-medium text-sm mb-2 text-foreground/70">
-                Response 1
+                Assistant Model
               </h3>
               <div className="min-h-32 text-foreground/90">
-                {gpt41Hook.isPending ? (
+                {assistantHook.isPending ? (
                   <div className="flex items-center justify-center h-full">
                     <Loader2 className="h-5 w-5 animate-spin text-foreground/50" />
                   </div>
-                ) : responses.gpt41 ? (
-                  <p className="whitespace-pre-wrap">{responses.gpt41}</p>
-                ) : (
-                  <p className="text-foreground/50 italic text-center">
-                    Response will appear here
-                  </p>
-                )}
-              </div>
-            </div>
-
-            <div className="border rounded-lg p-4">
-              <h3 className="font-medium text-sm mb-2 text-foreground/70">
-                Response 2
-              </h3>
-              <div className="min-h-32 text-foreground/90">
-                {gpt4oHook.isPending ? (
-                  <div className="flex items-center justify-center h-full">
-                    <Loader2 className="h-5 w-5 animate-spin text-foreground/50" />
-                  </div>
-                ) : responses.gpt4o ? (
-                  <p className="whitespace-pre-wrap">{responses.gpt4o}</p>
+                ) : responses.assistant ? (
+                  <p className="whitespace-pre-wrap">{responses.assistant}</p>
                 ) : (
                   <p className="text-foreground/50 italic text-center">
                     Response will appear here
@@ -143,7 +128,29 @@ export default function Home() {
               </div>
             </div>
           </div>
+
+          {threadId && (
+            <div className="text-xs text-foreground/50 text-center">
+              Thread ID: {threadId.slice(0, 20)}...
+            </div>
+          )}
+          <div className="flex items-center justify-center gap-4 mt-4">
+            {threadId && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setThreadId(null);
+                  setResponses({ gpt41: null, assistant: null });
+                }}
+                className="text-xs"
+              >
+                Start New Conversation
+              </Button>
+            )}
+          </div>
         </form>
+
         {/* Character Navigation Buttons */}
         <div className="flex flex-wrap items-center justify-center gap-3">
           {characters.map((character) => (
