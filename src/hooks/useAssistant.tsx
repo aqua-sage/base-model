@@ -134,7 +134,7 @@ export function useOpenAIAssistant({
 
     // Step 2: Add the user message to the thread
     const messageResponse = await fetch(
-      `https://api.openai.com/v1/threads${threadId}/messages`,
+      `https://api.openai.com/v1/threads/${threadId}/messages`,
       {
         method: "POST",
         headers,
@@ -160,7 +160,7 @@ export function useOpenAIAssistant({
       "You are an AI trained to answer questions strictly and only using the uploaded novel Superia stored in the connected vector database.Core rules: Always search the vector store for relevant excerpts before answering. If relevant text is found, base your answer entirely on it — do not invent, guess, or alter facts. If no relevant text is found, say: The novel Superia does not provide information about this. Preserve the novel’s tone,narrative style, and terminology in every response. When possible, include short, direct quotes from the source to support answers.Do not add new characters, events, locations, or lore not present in the novel. All facts, dialogue, and descriptions must be consistent with the novel’s canon.";
 
     const runResponse = await fetch(
-      `https://api.openai.com/v1/threads${threadId}/runs`,
+      `https://api.openai.com/v1/threads/${threadId}/runs`,
       {
         method: "POST",
         headers,
@@ -187,7 +187,7 @@ export function useOpenAIAssistant({
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait 1 second
 
       const runStatusResponse = await fetch(
-        `https://api.openai.com/v1/threads${threadId}/runs/${run.id}`,
+        `https://api.openai.com/v1/threads/${threadId}/runs/${run.id}`,
         {
           method: "GET",
           headers,
@@ -215,7 +215,7 @@ export function useOpenAIAssistant({
 
     // Step 5: Retrieve the assistant's response
     const messagesResponse = await fetch(
-      `https://api.openai.com/v1/threads${threadId}/messages`,
+      `https://api.openai.com/v1/threads/${threadId}/messages`,
       {
         method: "GET",
         headers,
