@@ -166,8 +166,8 @@ export function useOpenAIAssistant({
         headers,
         body: JSON.stringify({
           assistant_id: payload.assistantId,
-          instructions,
-          temperature: payload.temperature || 0.4,
+          instructions: payload.instructions || instructions,
+          temperature: payload.temperature || 0.7,
         }),
       }
     );
